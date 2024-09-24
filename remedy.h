@@ -6,6 +6,7 @@
 #include <vector>
 
 
+
 class Remedy {
 protected:
     std::string _Name;
