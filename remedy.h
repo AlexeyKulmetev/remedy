@@ -45,15 +45,9 @@ public:
 
     ~MedicalProcedure() {}
 
-    void read() override;
+    virtual void read() override;
 
-    void write() const override {
-        std::cout << "Information about the " << _Name << " procedure: " << std::endl;
-        std::cout << "Treatment days: " << _treatmentDays << std::endl;
-        std::cout << "Frequency per day: " << _frequencyPerDay << std::endl;
-        std::cout << "Execution conditions: " << _executionConditions << std::endl;
-        std::cout << "Minutes required for procedure: " << _minutesRequired << std::endl;
-    }
+    virtual void write() const override;
 };
 
 
@@ -81,36 +75,9 @@ public:
 
     ~Medicine() {}
 
-    void read() override {
-        std::string tmpName;
-        int tmpTreatDays;
-        int tmpFreqPerDay;
-        std::string tmpMethod;
-        float tmpDose;
+    virtual void read() override; 
 
-        std::cout << "Reading the medicine: " << std::endl;
-        std::cout << "Enter the name: "; std::cin >> tmpName;
-        std::cout << std::endl << "Enter the treatment days "; std::cin >> tmpTreatDays;
-        std::cout << std::endl << "Enter the Frequency per day: "; std::cin >> tmpFreqPerDay;
-        std::cout << std::endl << "Enter the intake method: "; std::cin >> tmpMethod;
-        std::cout << std::endl << "Enter the dose units: "; std::cin >> tmpDose;
-
-        if (tmpName.empty()) tmpName = "No name";
-        if (tmpTreatDays < 1) tmpTreatDays = 1;
-        if (tmpFreqPerDay < 1) tmpFreqPerDay = 1;
-        if (tmpMethod.empty()) tmpMethod = "No intake method";
-        if (tmpDose < 1) tmpDose = 1;
-
-        set(tmpName, tmpTreatDays, tmpFreqPerDay, tmpMethod, tmpDose);
-    }
-
-    void write() const override {
-        std::cout << "Information about the " << _Name << " medicine: " << std::endl;
-        std::cout << "Treatment days: " << _treatmentDays << std::endl;
-        std::cout << "Frequency per day: " << _frequencyPerDay << std::endl;
-        std::cout << "Intake method: " << _intakeMethod << std::endl;
-        std::cout << "Dose units: " << _doseUnits << std::endl; 
-    }
+    virtual void write() const override;
 };
 
 
@@ -122,6 +89,10 @@ public:
     // Default constructor
     TreatmentCourse() {}
 
+    TreatmentCourse(std::vector<Remedy*>& remedies) {
+        _remedyList = remedies;
+    }
+
     ~TreatmentCourse() {
         for (auto remedy : _remedyList) {
             delete remedy;
@@ -129,7 +100,15 @@ public:
         _remedyList.clear();
     }
 
-    
+    void addRemedy(Remedy* remedy) {
+        _remedyList.push_back(remedy);
+    }
+
+    void displayRemedy() {
+        for (Remedy* remedy : _remedyList) {
+            remedy->write();
+        }
+    }
 };
 
 #endif
